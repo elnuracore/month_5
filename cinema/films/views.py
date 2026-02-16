@@ -1,9 +1,37 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Film
+from .models import Film, Genre, Director
 from django.db import transaction
-from .serializers import FilmDetailSerializers, FilmListSerializers, FilmValidateSerializers
+from .serializers import (FilmDetailSerializers, 
+                          FilmListSerializers,
+                          FilmValidateSerializers, 
+                          GenreSerializers,
+                          DirectorSerializers
+                          )
+
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
+
+class GenreListAPIView(ListCreateAPIView):
+    serializer_class = GenreSerializers
+    queryset = Genre.objects.all()
+    pagination_class = PageNumberPagination
+
+class GenreDetailAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = GenreSerializers
+    queryset = Genre.objects.all()
+    lookup_field = "id"
+
+
+class DirectorViewSet(ModelViewSet):
+    serializer_class = DirectorSerializers
+    queryset = Director.objects.all()
+    pagination_class = PageNumberPagination
+    lookup_field = "id"
+
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def film_detail_api_view(request, id):
@@ -18,7 +46,6 @@ def film_detail_api_view(request, id):
         return Response(data=data)
     
     elif request.method == "PUT":
-
 
         film.title = request.data.get('title')
         film.text = request.data.get('text')
