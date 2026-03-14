@@ -1,0 +1,21 @@
+# version : '3'
+services:
+  cinema_api:
+    build:
+        context: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - cinema_data
+  cinema_data:
+    env_file: 
+      - .env
+    image: 'postgres:14'       
+    environment:
+      - POSTGRES_DB=cinema_test_db
+      - POSTGRES_USER=cinema_test_db_user
+      - POSTGRES_PASSWORD=1234
+    
+    volumes:
+      - .:/app

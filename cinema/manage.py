@@ -1,10 +1,10 @@
 import os
 import sys
-import dotenv # Make sure this is here
+import dotenv 
 
 def main():
     """Run administrative tasks."""
-    dotenv.load_dotenv() # Ensure it is "load_dotenv"
+    dotenv.load_dotenv() 
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cinema.settings')
     try:
         from django.core.management import execute_from_command_line
