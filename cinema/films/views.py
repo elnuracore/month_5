@@ -9,7 +9,7 @@ from .serializers import (FilmDetailSerializers,
                           GenreSerializers,
                           DirectorSerializers
                           )
-
+from common.permissions import IsModerator
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
@@ -18,11 +18,13 @@ class GenreListAPIView(ListCreateAPIView):
     serializer_class = GenreSerializers
     queryset = Genre.objects.all()
     pagination_class = PageNumberPagination
+    permission_classes = [IsModerator]
 
 class GenreDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = GenreSerializers
     queryset = Genre.objects.all()
     lookup_field = "id"
+    permission_classes = [IsModerator]
 
 
 class DirectorViewSet(ModelViewSet):

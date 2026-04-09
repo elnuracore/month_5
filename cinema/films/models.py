@@ -1,19 +1,20 @@
 from django.db import models
+from common.models import BaseModel
 
-class Director(models.Model):
+class Director(BaseModel):
     fio = models.CharField(max_length=255)
     birthday = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.fio
 
-class Genre(models.Model):
+class Genre(BaseModel):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
-class Film(models.Model):
+class Film(BaseModel):
     director = models.ForeignKey(Director, on_delete=models.CASCADE, null=True)
     genres = models.ManyToManyField(Genre, blank=True)
 
@@ -35,7 +36,7 @@ STARS = (
     (i, "* "* i) for i in range(1,11)
 )
 
-class Review(models.Model):
+class Review(BaseModel):
     text = models.CharField(max_length=255)
     stars = models.IntegerField(choices=STARS, default=4)
     film = models.ForeignKey(Film, on_delete=models.CASCADE, related_name='reviews')
